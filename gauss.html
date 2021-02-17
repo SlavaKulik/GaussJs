@@ -1,0 +1,92 @@
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>Решение СЛАУ методом Гаусса</title>
+<body>
+    <center>
+    <h2>Решение СЛАУ методом Гаусса</h2>
+    </center>
+<script language = javascript>
+
+let numberOfRows = +prompt("Введите число уравнений системы:"); //Ввод данных
+
+let array = new Array(numberOfRows); //Определение рабочего массива
+let arrAnswer = new Array(numberOfRows); //Массив ответов
+
+for(let i = 0; i < numberOfRows; ++i) {
+    array[i] = new Array(numberOfRows);
+    arrAnswer[i] = new Array(numberOfRows);
+}
+ 
+for(let i = 0; i < numberOfRows; ++i) { //Заполнение матрицы
+    for(let j = 0; j <= numberOfRows; ++j) {
+        array[i][j] = +prompt("Введите систему:");
+    }
+}
+
+document.write("<table border='3'>"); //Вывод исходной матрицы
+for(let i = 0; i < numberOfRows; ++i) {
+    for(let j = 0; j <= numberOfRows; ++j) {
+        if(j === 0) document.write("<tr>");
+    document.write("<td>" + array[i][j] + "</td>");
+    if(j === numberOfRows) document.write("</tr>");
+    }
+}
+
+document.write("</table>");
+Iteration(numberOfRows);
+Answers();
+ 
+function Iteration(iter_item) { //Функция итеррация
+    for(let iter_item = 0; iter_item < (numberOfRows-1); iter_item++) { //Цикл выполнения итерраций
+        if (array[iter_item][iter_item] == 0) SwapRows(iter_item); //Проверка на ноль
+        for(let j = numberOfRows; j >= iter_item; j--) {
+            array[iter_item][j] /= array[iter_item][iter_item]; //Делим строку i на а[i][i]
+        }
+        for(let i = iter_item+1; i < numberOfRows; i++) { //Выполнение операций со строками
+            for(let j = numberOfRows;j >= iter_item; j--) {
+                array[i][j] -= array[iter_item][j] * array[i][iter_item];
+            }
+        }
+        // if (iter_item % 2) document.write("<table border='1'>");//Вывод итеррации
+        //     else    document.write("<table>");
+        // for(i=0; i<n; ++i) {
+        //     document.write("<tr>");
+        //     for(j=0; j <= n; ++j) {
+        //         document.write("<td>" + m[i][j] + "</td>");
+        //     }
+        //     document.write("</tr>");
+        // }
+        // document.write("</table>");
+    }
+};
+
+function SwapRows(iter_item) { //Функция перемены строк
+    for(let i = iter_item+1; i < numberOfRows; i++) {
+        if(array[i][iter_item] !== 0) {
+            for(let j = 0;j <= numberOfRows; j++) {
+                let k = array[i-1][j];
+                array[i-1][j] = array[i][j];
+                array[i][j] = k;
+            }
+        } 
+    }
+};
+
+function Answers() { //Функция поиска и вывода корней
+    arrAnswer[numberOfRows-1] = array[numberOfRows-1][numberOfRows]/array[numberOfRows-1][numberOfRows-1];
+    for(let i = numberOfRows-2; i >= 0; i--) {
+        k = 0;
+        for(let j = numberOfRows-1; j > i; j--) {
+            k = (array[i][j]*arrAnswer[j]) + k;
+        }
+        arrAnswer[i] = array[i][numberOfRows] - k;
+    }
+    for(let i = numberOfRows; i > 0; i--) {
+    document.write("<center><h1> x" + i + " = " + arrAnswer[i-1] + "</h1></center>");
+    }
+};
+
+</script>
+</body
+</html>
