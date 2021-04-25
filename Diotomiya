@@ -1,0 +1,73 @@
+// dihotomiyav2.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include "pch.h"
+#include <iostream>
+#include <math.h>
+#include <iomanip>
+
+using namespace std;
+
+double f(double x) {
+	double f;
+	f = pow(x, 3) - 4.1 * pow(x, 2) + 2.2 * x + 1.4;
+	return f;
+}
+
+void main(){
+	double a, b, n, h, x, e, a1, b1, result;
+	e = 0.0001;
+	int k, k1;
+	setlocale(LC_ALL, "Rus");
+	cout << "Введите левую границу: \n";
+	cin >> a;
+	cout << "Введите правую границу: \n";
+	cin >> b;
+	cout << "Введите число разбиений: \n";
+	cin >> n;
+	h = (b - a) / n;
+	cout << "h=" << h << endl;
+	k = 0;
+	cout << setw(15) << "x" << setw(15) << "f(x)" << endl;
+	for (x = a; x <= b; x = x + h) {
+		cout << setw(15) << x << setw(15) << f(x);
+		if (x < b && f(x)*f(x + h) < 0) {
+			cout << " Промежуток изоляции [" << x << ";" << x + h << "]" << endl;
+			k = k + 1;
+		}
+		else {
+			cout << endl;
+		}
+	}
+	cout << "Количество корней k=" << k << "\n" <<endl;
+	cout << "Введите данные отрезка изоляции, для которого желаете вычислить корень" << endl;
+	cout << "Введите левую границу отрезка изоляции: ";
+	cin >> a1;
+	cout << "Введите правую границу отрезка изоляции: ";
+	cin >> b1;
+	if (f(a1)*f(b1) < 0) {
+		cout << "Условие сходимости выполнено" << "\n"<< endl;
+		k1 = 0;
+		while (fabs(b1-a1)>2*e) {
+			x = (a1 + b1) / 2.0;
+			k1 = k1 + 1;
+			if (fabs(f(x)) < e) break;
+				if (f(a1)*f(x) < 0) {
+					a1 = a1;
+					b1 = x;
+				}
+				else {
+					a1 = x;
+					b1 = b1;
+				}
+				result = (a1 + b1) / 2.0;
+				cout << setw(15)<<"x="<< x << setw(15) <<"f(x)="<< f(x)<<setw(15)<<"|b-a|="<<fabs(b1-a1)<<endl;
+		}
+		cout << "Корень уравнения после достижения необ. точности x=" << result << endl;
+		cout << "Значение функции после достижения необ. точности f(x)=" << f(result) << endl;
+		cout << "Количество итераций k1=" << k1 << endl;
+	}
+	else {
+		cout << "Условие сходимости не выполнено!" << endl;
+	}
+}
